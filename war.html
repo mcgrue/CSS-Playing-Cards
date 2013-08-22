@@ -41,6 +41,7 @@
     <style type="text/css"><!--
         body {
             margin: 2em 20%;
+            background-color: #088A4B;
         }
         .options.active {
             position: fixed;
@@ -141,8 +142,6 @@
     <div class="clear"></div>
 
 <!-- A Full Set -->
-
-    <h2 id="full">A Full Set</h2>
 
     <ul class="allcards">
         <li>
@@ -319,7 +318,9 @@
     <script>
     var allcards = $( ".allcards .card" ).each( function(idx, val) {
         $(val).draggable({ snap: true });
+        $(val).hide();
     });
+    $( ".allcards").hide();
 
     </script>
 
