@@ -42,6 +42,7 @@
         body {
             margin: 2em 20%;
             background-color: #088A4B;
+            margin-left: 400px;
         }
 
         .options.active {
@@ -306,6 +307,22 @@
         return o;
     };
 
+
+    ///  "♦", "♠", "♣", "♥"
+    function removeFromDeck( rank, suit, deck ) {
+        var i =0;
+        var card = null;
+        for( ; i<deck.length; i++ ) {
+            card = deck[i];
+
+            if( rank == card.rank && suit == card.suit ) {
+                return deck.splice(i,1);
+            }
+        }
+
+        throw "could not find "+rank+" of " +suit+" in given deck.";
+    }
+
     var allcards = $( ".allcards .card" ).each( function(idx, val) {
         var card = $(val);
 
@@ -319,6 +336,21 @@
     });
 
     deck = shuffle(deck);
+    rig = [];
+
+    rig.push( removeFromDeck("3","♦",deck) );
+    rig.push( removeFromDeck("8","♣",deck) );
+
+    rig.push( removeFromDeck("K","♠",deck) );
+    rig.push( removeFromDeck("2","♥",deck) );
+
+    rig.push( removeFromDeck("Q","♥",deck) );
+    rig.push( removeFromDeck("Q","♦",deck) );
+
+    while( rig.length ) {
+        deck[deck.length] = rig.pop()[0];
+    }
+
     var zedIndex = 10000;
 
     $(".deck").click( function() {
