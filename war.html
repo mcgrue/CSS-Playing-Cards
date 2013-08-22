@@ -316,11 +316,49 @@
 
 
     <script>
+    var deck = [];
+
+    function splitDeckAnimation( cardstack, index ) {
+
+        var where = (index % 2) == 0 ? {left:'250px'} : {left:'-250px'};
+
+        var options = { duration: 100 };
+
+        if( index > 0 ) {
+            options['complete'] = function() {
+                splitDeckAnimation(cardstack, index-1); 
+            };
+        }
+
+        $(cardstack[index]).animate(
+            where, options
+        );
+    }
+
+    function shuffle(o){ //v1.0
+        for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+        return o;
+    };
+
     var allcards = $( ".allcards .card" ).each( function(idx, val) {
-        $(val).draggable({ snap: true });
-        $(val).hide();
+        var card = $(val);
+
+        card.draggable({ snap: true });
+        card.hide();
+        deck.push({
+            rank : card.children()[0].innerText,
+            suit : card.children()[1].innerText,
+            element: card
+        });
     });
     $( ".allcards").hide();
+
+    deck = shuffle(deck);
+
+    $(".deck").click( function() {
+        var cardBacks = $(".deck li div");
+        splitDeckAnimation( cardBacks, cardBacks.length-1 );
+    } );
 
     </script>
 
