@@ -240,22 +240,51 @@
     });
 
     deck = shuffle(deck);
+    var zedIndex = 10000;
 
     $(".deck").click( function() {
         var cardBacks = $(".deck li div");
         splitDeckAnimation( cardBacks, cardBacks.length-1 );
 
-        $("div.card.back").dblclick( function(evt) {
-
+        $("div.card.back").click( function(evt) {
             if( evt.isPropagationStopped() ) return;
-
-            //debugger;
             evt.stopPropagation();
 
-            var card = deck.pop();
-            //card.element.position( $(evt.toElement).position() );
-            card.element.show();
-        } );        
+            var newCard = $('<div class="new card back">*</div>');
+            var daddyCard = $(evt.toElement);
+            
+            //daddyCard.parent().append(newCard);
+            
+            newCard.css( 'position', 'absolute' );
+            newCard.css( 'z-index', zedIndex++ );
+            newCard.css( 'top', (daddyCard.offset().top+10)  + "px" );
+            newCard.css( 'left',daddyCard.offset().left + "px" );            
+            newCard.draggable();
+
+            newCard.dblclick( function(evt) {
+
+                if( evt.isPropagationStopped() ) return;
+                evt.stopPropagation();
+
+                var daddyCard = $(evt.toElement);
+
+                var card = deck.pop();
+                var babyCard = card.element;
+                babyCard.css( 'position', 'absolute' );
+                babyCard.css( 'z-index', zedIndex++ );
+                babyCard.css( 'top', (daddyCard.offset().top)  + "px" );
+                babyCard.css( 'left',daddyCard.offset().left + "px" );
+
+                //card.element.position( $(evt.toElement).position() );
+                babyCard.show();
+                daddyCard.hide();
+            } );      
+
+            $(".playingCards").append(newCard);
+        } );
+
+
+        $("div.card.back")  
     } );
 
 
